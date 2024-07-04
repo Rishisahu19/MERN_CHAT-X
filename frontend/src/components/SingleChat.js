@@ -15,7 +15,7 @@ import animationData from "../animations/typing.json";
 import notificationSound from "../animations/Notification.mp3";
 import messageSound from "../animations/message.mp3"; // Import your message sound file
 
-const ENDPOINT = "localhost:5000"; // Change this to your deployed endpoint
+const ENDPOINT = "https://mern-chat-x.onrender.com"; // Change this to your deployed endpoint
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
