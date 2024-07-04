@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import { Box, Text, FormControl, Input, IconButton, Spinner, useToast } from "@chakra-ui/react";
+import { Box, Text, FormControl, Input, IconButton, Spinner, useToast, Button, Flex } from "@chakra-ui/react";
 import { ArrowBackIcon } from "@chakra-ui/icons";
 import { getSender, getSenderFull } from "../config/ChatLogics";
 import ProfileModal from "../miscellaneous/ProfileModal";
@@ -11,6 +11,9 @@ import axios from "axios";
 import io from "socket.io-client";
 import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
+
+import notificationSound from "../animations/Notification.mp3";
+import messageSound from "../animations/Notification.mp3"; 
 
 const ENDPOINT = "https://mern-chat-x.onrender.com"; // Change this to your deployed endpoint
 let socket, selectedChatCompare;
@@ -34,6 +37,11 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
 
   const toast = useToast();
   const { user, selectedChat, setSelectedChat, notification, setNotification } = ChatState();
+
+  const playSound = (soundUrl) => {
+    const audio = new Audio(soundUrl);
+    audio.play();
+  };
 
   const fetchMessages = useCallback(async () => {
     if (!selectedChat) return;
@@ -77,17 +85,33 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   useEffect(() => {
     fetchMessages();
     selectedChatCompare = selectedChat;
+
+    // Reset typing indicator when chat changes
+    setIsTyping(false); // Reset isTyping state
+    setTyping(false);   // Reset typing state
+
+    return () => {
+      if (selectedChat) {
+        socket.emit('stop typing', selectedChat._id); // Emit stop typing event for previous chat
+      }
+    };
   }, [selectedChat, fetchMessages]);
 
   useEffect(() => {
     socket.on('message received', (newMessageReceived) => {
       if (!selectedChatCompare || selectedChatCompare._id !== newMessageReceived.chat._id) {
+        // Play notification sound
+        playSound(notificationSound);
+
         // Handle notifications if needed
         if (!notification.includes(newMessageReceived)) {
           setNotification([newMessageReceived, ...notification]);
           setFetchAgain(!fetchAgain);
         }
       } else {
+        // Play message sound
+        playSound(messageSound);
+
         setMessages(prevMessages => [...prevMessages, newMessageReceived]);
       }
     });
@@ -98,7 +122,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   }, [selectedChat, fetchAgain, notification, setFetchAgain, setNotification]);
 
   const sendMessage = async (event) => {
-    if (event.key === "Enter" && newMessage) {
+    if ((event.key === "Enter" || event.type === "click") && newMessage) {
       socket.emit('stop typing', selectedChat._id);
       try {
         const config = {
@@ -107,12 +131,15 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             Authorization: `Bearer ${user.token}`,
           },
         };
+        const timestamp = new Date().toISOString(); // Current time as timestamp
+        const messageData = {
+          content: newMessage,
+          chatId: selectedChat._id,
+          status: "sent",
+          timestamp: timestamp
+        };
         setNewMessage("");
-        const { data } = await axios.post(
-          "/api/message",
-          { content: newMessage, chatId: selectedChat._id },
-          config
-        );
+        const { data } = await axios.post("/api/message", messageData, config);
 
         socket.emit("new message", data);
         setMessages(prevMessages => [...prevMessages, data]);
@@ -203,23 +230,33 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                 <ScrollableChat messages={messages} />
               </div>
             )}
-            <FormControl onKeyDown={sendMessage} isRequired mt={3}>
+            <FormControl isRequired mt={3}>
               {isTyping ? (
                 <div>
                   <Lottie
                     options={defaultOptions}
                     width={70}
-                    style={{ marginBottom: 15, marginLeft: 0 }}
+                    height={70} // Use height and width instead of style
                   />
                 </div>
               ) : null}
-              <Input
-                variant="filled"
-                bg="#E0E0E0"
-                placeholder="Enter a message.."
-                value={newMessage}
-                onChange={typingHandler}
-              />
+              <Flex>
+                <Input
+                  variant="filled"
+                  bg="#E0E0E0"
+                  placeholder="Enter a message.."
+                  value={newMessage}
+                  onChange={typingHandler}
+                  onKeyDown={(e) => e.key === 'Enter' && sendMessage(e)}
+                  mr={2} // Add margin to the right to space the button
+                />
+                <Button
+                  colorScheme="teal"
+                  onClick={sendMessage}
+                >
+                  Send
+                </Button>
+              </Flex>
             </FormControl>
           </Box>
         </>
