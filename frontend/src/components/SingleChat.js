@@ -13,9 +13,9 @@ import Lottie from "react-lottie";
 import animationData from "../animations/typing.json";
 
 import notificationSound from "../animations/Notification.mp3";
-import messageSound from "../animations/Notification.mp3"; 
+import messageSound from "../animations/message.mp3"; // Import your message sound file
 
-const ENDPOINT = "https://mern-chat-x.onrender.com"; // Change this to your deployed endpoint
+const ENDPOINT = "localhost:5000"; // Change this to your deployed endpoint
 let socket, selectedChatCompare;
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
@@ -131,15 +131,12 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
             Authorization: `Bearer ${user.token}`,
           },
         };
-        const timestamp = new Date().toISOString(); // Current time as timestamp
-        const messageData = {
-          content: newMessage,
-          chatId: selectedChat._id,
-          status: "sent",
-          timestamp: timestamp
-        };
         setNewMessage("");
-        const { data } = await axios.post("/api/message", messageData, config);
+        const { data } = await axios.post(
+          "/api/message",
+          { content: newMessage, chatId: selectedChat._id },
+          config
+        );
 
         socket.emit("new message", data);
         setMessages(prevMessages => [...prevMessages, data]);
@@ -236,7 +233,7 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
                   <Lottie
                     options={defaultOptions}
                     width={70}
-                    height={70} // Use height and width instead of style
+                    style={{ marginBottom: 15, marginLeft: 0 }}
                   />
                 </div>
               ) : null}
