@@ -8,7 +8,7 @@ const userRoutes = require('./routes/userRoutes');
 const chatRoutes = require('./routes/chatRoutes');
 const messageRoutes = require('./routes/messageRoutes');
 const { notFound, errorHandler } = require('./middleware/errorMiddleware');
-const path=require('path');
+const path = require('path');
 
 // Load environment variables
 dotenv.config();
@@ -18,7 +18,7 @@ connectDB();
 
 // Middleware
 app.use(cors());
-app.use(express.json());
+app.use(express.json()); //To Accept JSON data from the body(FrontEnd)
 
 // Routes
 // app.get('/', (req, res) => {

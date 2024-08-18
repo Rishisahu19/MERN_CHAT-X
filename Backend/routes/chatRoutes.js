@@ -1,11 +1,11 @@
 const express = require("express");
-const {protect} = require("../middleware/authMiddleware"); // Ensure this path is correct
+const { protect } = require("../middleware/authMiddleware"); // Ensure this path is correct
 const { accessChat } = require("../controllers/chatControllers"); // Ensure this path is correct
 const { fetchChat } = require("../controllers/chatControllers"); // Ensure this path is correct
-const { createGroupChat, renameGroup, removeFromGroup, addToGroup } = require("../controllers/chatControllers"); 
+const { createGroupChat, renameGroup, removeFromGroup, addToGroup } = require("../controllers/chatControllers");
 const router = express.Router();
 
-router.route('/').post(protect,accessChat);
+router.route('/').post(protect, accessChat);
 router.route('/').get(protect, fetchChat);
 router.route('/group').post(protect, createGroupChat);
 router.route('/rename').put(protect, renameGroup);

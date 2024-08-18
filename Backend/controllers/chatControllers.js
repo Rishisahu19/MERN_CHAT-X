@@ -59,7 +59,7 @@ const fetchChat = asyncHandler(async (req, res) => {
                     path: "latestMessage.sender",
                     select: "name pic email"
                 });
-                res.send(results);
+                res.status(200).send(results);
             })
 
 
@@ -69,7 +69,6 @@ const fetchChat = asyncHandler(async (req, res) => {
         throw new Error(error.message);
     }
 })
-
 
 const createGroupChat = asyncHandler(async (req, res) => {
     if (!req.body.users || !req.body.name) {
@@ -104,7 +103,6 @@ const createGroupChat = asyncHandler(async (req, res) => {
 
 })
 
-
 const renameGroup = asyncHandler(async (req, res) => {
     const { chatId, chatName } = req.body;
 
@@ -128,7 +126,6 @@ const renameGroup = asyncHandler(async (req, res) => {
 
 })
 
-
 const addToGroup = asyncHandler(async (req, res) => {
     const { chatId, userId } = req.body;
     const added = await Chat.findByIdAndUpdate(
@@ -149,6 +146,7 @@ const addToGroup = asyncHandler(async (req, res) => {
     }
 }
 )
+
 const removeFromGroup = asyncHandler(async (req, res) => {
     const { chatId, userId } = req.body;
     const removed = await Chat.findByIdAndUpdate(
@@ -171,4 +169,4 @@ const removeFromGroup = asyncHandler(async (req, res) => {
 )
 
 
-module.exports = { accessChat, fetchChat, createGroupChat, renameGroup, addToGroup,removeFromGroup };
+module.exports = { accessChat, fetchChat, createGroupChat, renameGroup, addToGroup, removeFromGroup };
