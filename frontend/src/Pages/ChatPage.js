@@ -8,7 +8,7 @@ import { useState } from "react";
 
 const ChatPage = () => {
   const { user } = ChatState();
-  const [fetchAagin,setFetchAgain]=useState(false);
+  const [fetchAgain, setFetchAgain] = useState(false);
 
   return (
     <div style={{ width: "100%" }}>
@@ -20,8 +20,8 @@ const ChatPage = () => {
         height="91.5vh"
         padding="10px"
       >
-        {user && <MyChats fetchAgain={fetchAagin} setFetchAgain={setFetchAgain}/>}
-        {user && <ChatBox fetchAgain={fetchAagin} setFetchAgain={setFetchAgain} />}
+        {user && <MyChats fetchAgain={fetchAgain} />}
+        {user && <ChatBox fetchAgain={fetchAgain} setFetchAgain={setFetchAgain} />}
       </Box>
     </div>
   );

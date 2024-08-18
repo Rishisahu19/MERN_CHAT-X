@@ -33,13 +33,14 @@ const root = document.getElementById('root');
 const rootElement = (
   <BrowserRouter>
 
-  <ChatProvider>
-    
+    <ChatProvider>
+
       <ChakraProvider>
         <App />
       </ChakraProvider>
-  
-  </ChatProvider>
+
+    </ChatProvider>
+
   </BrowserRouter>
 
 );

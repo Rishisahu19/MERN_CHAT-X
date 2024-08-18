@@ -32,8 +32,8 @@ const ScrollableChat = ({ messages }) => {
               )}
             <Box
               bg={m.sender._id === user._id ? "#BEE3F8" : "#B9F5D0"}
-              ml={isSameSenderMargin(messages, m, i, user._id)}
-              mt={isSameUser(messages, m, i, user._id) ? 3 : 10}
+              marginLeft={isSameSenderMargin(messages, m, i, user._id)}
+              marginTop={isSameUser(messages, m, i, user._id) ? 3 : 10}
               borderRadius="20px"
               p="5px 15px"
               maxW="75%"

@@ -94,7 +94,7 @@ const Signup = () => {
     const submitHandler = async () => {
         setLoading(true);
 
-        if (!name || !email || !password || !pic) {
+        if (!name || !email || !password ) {
             toast({
                 title: 'Please fill all the fields',
                 status: 'warning',
@@ -126,7 +126,7 @@ const Signup = () => {
             };
 
             const { data } = await axios.post('/api/user', { name, email, password, pic }, config);
-            console.log(JSON.stringify(data));
+            // console.log(JSON.stringify(data));
             toast({
                 title: 'Registration Successful!',
                 description: 'You have successfully registered!',

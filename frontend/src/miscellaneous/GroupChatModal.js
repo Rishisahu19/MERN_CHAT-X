@@ -45,7 +45,7 @@ const GroupChatModal = ({ children }) => {
     setSelectedUsers([...selectedUsers, userToAdd]);
   };
 
-  const handleSearch = async(query) => {
+  const handleSearch = async (query) => {
     setSearch(query);
     if (!query) {
       return;
@@ -59,7 +59,7 @@ const GroupChatModal = ({ children }) => {
         },
       };
       const { data } = await axios.get(`/api/user?search=${search}`, config);
-      console.log(data);
+      // console.log(data);
       setLoading(false);
       setSearchResult(data);
     } catch (error) {
@@ -163,6 +163,7 @@ const GroupChatModal = ({ children }) => {
                   key={u._id}
                   user={u}
                   handleFunction={() => handleDelete(u)}
+                // admin={user._id}
                 />
               ))}
             </Box>

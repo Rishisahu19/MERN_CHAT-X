@@ -36,7 +36,7 @@ const Login = () => {
       };
 
       const { data } = await axios.post(
-        '/api/user/login', 
+        '/api/user/login',
         { email, password },
         config
       );
@@ -52,7 +52,7 @@ const Login = () => {
       localStorage.setItem('userInfo', JSON.stringify(data));
       setLoading(false);
       // history.push('/chats'); // Ensure the route exists or update accordingly
-      history.push('/');
+      history.push('/chats');
 
     } catch (error) {
       toast({

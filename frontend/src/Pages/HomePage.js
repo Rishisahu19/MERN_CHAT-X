@@ -31,7 +31,7 @@ const HomePage = () => {
       </Box>
       <Box bg='white' w="100%" p={4} borderRadius='lg' color='black' borderWidth='1px'>
         <Tabs variant='soft-rounded'>
-          <TabList>
+          <TabList >
             <Tab width='50%'>Login</Tab>
             <Tab width='50%'>Sign Up</Tab>
           </TabList>

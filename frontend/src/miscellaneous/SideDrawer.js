@@ -96,7 +96,7 @@ const SideDrawer = () => {
       };
       const { data } = await axios.post(`/api/chat`, { userId }, config);
 
-      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]);
+      if (!chats.find((c) => c._id === data._id)) setChats([data, ...chats]); //if the chat is not already in the chat list, add it to the list
       setSelectedChat(data);
       setLoadingChat(false);
       onClose();

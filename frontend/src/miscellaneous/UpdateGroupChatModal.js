@@ -22,7 +22,7 @@ import { ChatState } from "../Context/ChatProvider";
 import UserBadgeItem from "../UserAvatar/UserBadgeItem";
 import UserListItem from "../UserAvatar/UserListItem";
 
-const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
+const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain, fetchMessages }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
     const [groupChatName, setGroupChatName] = useState("");
     const [search, setSearch] = useState("");
@@ -161,7 +161,6 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
         setGroupChatName("");
     };
 
-
     const handleRemove = async (user1) => {
         if (selectedChat.groupAdmin._id !== user._id && user1._id !== user._id) {
             toast({
@@ -231,8 +230,8 @@ const UpdateGroupChatModal = ({ fetchAgain, setFetchAgain,fetchMessages }) => {
                                 <UserBadgeItem
                                     key={u._id}
                                     user={u}
-                                    admin={selectedChat.groupAdmin}
                                     handleFunction={() => handleRemove(u)}
+                                // admin={selectedChat.groupAdmin}
                                 />
                             ))}
                         </Box>

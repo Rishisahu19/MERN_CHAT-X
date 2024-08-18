@@ -21,7 +21,7 @@ const ChatProvider = ({ children }) => {
     }, [history]); // Remove history from dependency array
 
     return (
-        <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats,notification,setNotification }}>
+        <ChatContext.Provider value={{ user, setUser, selectedChat, setSelectedChat, chats, setChats, notification, setNotification }}>
             {children}
         </ChatContext.Provider>
     );
